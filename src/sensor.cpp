@@ -23,37 +23,38 @@ float getTimeInterval() {
     }
 
     while(true) {
+        delay(TIMEDELAY);
+
         previousSensor = newSensor;
         newSensor = getSpeedSensor();
 
         if(previousSensor == true && newSensor == false) {
             time1 = millis();
+            Serial.println(time1);
         }
         
         else if(previousSensor == false && newSensor == true) {
             time2 = millis();
+            Serial.println(time2);
             break;
         }
     }
     
-    timeInterval = (time2 - time1) / 1000;
+    Serial.println(time2);
+    Serial.println(time1);
+
+    timeInterval = (time2 - time1) / 1000.0;
 
     return timeInterval;
 }
 
-float getSpeed() { // km/h
-    float speed;
-    float timeInterval = getTimeInterval();
-    speed = (2 * PI * R / timeInterval) * 3.6;
-
+float calSpeed(float timeInterval) { // km/h
+    float speed = (2.0 * PI * R / timeInterval) * 3.6;
     return speed;
 }
 
-float getRPM() {
-    float rpm;
-    float timeInterval = getTimeInterval();
-    rpm = (2 * PI * R / timeInterval) * 60;
-
+float calRPM(float timeInterval) {
+    float rpm = (2.0 * PI * R / timeInterval) * 60.0;
     return rpm;
 }
 
@@ -61,7 +62,8 @@ float getRPM() {
 float getTemperature() { // C
     float temperature;
     int value = analogRead(TEMPERATURE);
-    temperature = (value * 5.0 * 100) / 1024.0;
+    Serial.println(value);
+    temperature = (value * V * 100.0) / 1024.0;
     
     return temperature;
 }

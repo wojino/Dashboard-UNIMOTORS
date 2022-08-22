@@ -2,15 +2,16 @@
 #include "src/sensor.h"
 #include "src/TM1637Display.h"
 
-#define DELAY 100
-#define CLK1 3
-#define DIO1 4
-#define CLK2 5
-#define DIO2 6
-#define CLK3 7
-#define DIO3 8
+#define DELAY 0
+#define CLK1 8
+#define DIO1 9
+#define CLK2 10
+#define DIO2 11
+#define CLK3 12
+#define DIO3 13
 
-int speed, rpm, temperature;
+float timeInterval;
+float speed, rpm, temperature;
 String str;
 TM1637Display display1 = initDisplay(CLK1, DIO1);
 TM1637Display display2 = initDisplay(CLK2, DIO2);
@@ -23,20 +24,27 @@ void setup() {
 }
 
 void loop() {
-    speed = getSpeed();
-    displayNum(display1, speed);
+    timeInterval = getTimeInterval();
 
-    rpm = getRPM();
-    displayNum(display3, rpm);
+    speed = calSpeed(timeInterval);
+    displayNum(display1, (int)speed);
+
+    rpm = calRPM(timeInterval);
+    displayNum(display2, (int)rpm);
 
     temperature = getTemperature();
-    displayNum(display2, temperature);
+    displayNum(display3, (int)temperature);
 
-    str = speed + " km/h | ";
-    str += rpm + " rpm | ";
-    str += temperature + " C";
-    Serial.println(str);
 
+    Serial.print("Time Interval: ");
+    Serial.println(timeInterval);
+    Serial.print("Speed: ");
+    Serial.println(speed);
+    Serial.print("RPM: ");
+    Serial.println(rpm);
+    Serial.print("Temperature: ");
+    Serial.println(temperature);
+    
     delay(DELAY);
 
     Serial.println("loop");

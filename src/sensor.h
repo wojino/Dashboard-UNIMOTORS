@@ -1,14 +1,17 @@
 #ifndef SPEED_H
 #define SPEED_H
 
-#define IR 1
+#define V 4.4
+#define IR 2
 #define R 0.531 / 2 // m
-#define TEMPERATURE 2
+#define TEMPERATURE A0
+#define TIMEDELAY 1
 
 // Speed (FC51)
 bool getSpeedSensor();
-float getSpeed();
-float getRPM();
+float getTimeInterval();
+float calSpeed(float timeInterval);
+float calRPM(float timeInterval);
 
 // Temperature (LM35)
 float getTemperature();
